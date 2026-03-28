@@ -33,9 +33,9 @@ def get_random_question():
     """returns a random index from the questions list"""
     return random.randint(0, len(questions) - 1)
 
-def display_question(question_index):
+def display_question(question):
     """prints the question at the given index number"""
-    print(questions[question_index])
+    print(questions[question])
 
 def get_user_choice():
     """gets input from the User (1-4)
@@ -47,12 +47,26 @@ def get_user_choice():
         print("only between 1-4")
         return get_user_choice()
 
-def user_answer_is_correct(question_index, user_choice):
+def user_answer_is_correct(question, user_answer):
     """return True if the answer is correct
     returns False otherwise"""
-    if user_choice == answers[question_index]:
+    if user_answer == answers[question]:
+        print (answers[question])
         return True
     else:
+        #(for bonus):
+        #split the whole question into a list
+        split_answer = questions[question].split(" ")
+        for word in split_answer:
+            #added brackets over the answer number and set it as a string
+            answer = f"(" + str(answers[question]) + ")"
+            if answer == word:
+                #when answer number is found in split list save its index
+                answer_index = split_answer.index(answer)
+                break
+        #full answer = answer number index + 1 (the city name)
+        full_answer = split_answer[answer_index+1]
+        print(f"Answer was {full_answer}")
         return False
 
 def check_if_score_is_5(score):
@@ -69,30 +83,28 @@ def check_if_miss_is_3(miss):
     else:
         return False
 
-def remove_question(question_index):
-    questions.pop(question_index)
-    answers.pop(question_index)
-
-def correct_city_answer():
-    pass
+def remove_question(question):
+    """removes the question and answer from the list so they won't be asked twice"""
+    questions.pop(question)
+    answers.pop(question)
 
 
 while True:
-    question_index = get_random_question()
-    display_question(question_index)
+    _index = get_random_question()
+    display_question(_index)
 
     user_choice = get_user_choice()
 
-    if user_answer_is_correct(question_index, user_choice):
+    if user_answer_is_correct(_index, user_choice):
         score += 1
         print('You are correct')
     else:
         miss += 1
         print('You are wrong!')
-        print(answers[question_index])
+
 
     # remove the used question so it will not appear again
-    remove_question(question_index)
+    remove_question(_index)
 
     if check_if_score_is_5(score):
         print('WINNER !!!')
