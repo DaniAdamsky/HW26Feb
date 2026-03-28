@@ -51,7 +51,6 @@ def user_answer_is_correct(question, user_answer):
     """return True if the answer is correct
     returns False otherwise"""
     if user_answer == answers[question]:
-        print (answers[question])
         return True
     else:
         #(for bonus):
